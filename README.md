@@ -22,3 +22,8 @@ Mantenha todos informados, atualizando o status dos problemas à medida que eles
 - Feche os problemas resolvidos
 
 Depois que um problema for resolvido, basta marcá-lo como fechado no TeamTask. Isso ajuda a manter sua lista de tarefas limpa e garante que você se concentre nos problemas que ainda precisam de atenção.
+
+- Remover tarefas
+
+Os usuários devem poder remover tarefas que já não são relevantes ou necessárias para o progresso do projeto. Ao deletar uma tarefa, ela será removida permanentemente do sistema, eliminando-a da lista de tarefas pendentes e histórico. A capacidade de deletar tarefas é crucial para manter a eficiência e a organização do fluxo de trabalho, permitindo que os usuários gerenciem suas listas de tarefas de forma mais eficaz. No entanto, é importante implementar medidas de segurança para evitar a exclusão acidental de informações importantes.
+

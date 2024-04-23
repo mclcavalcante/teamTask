@@ -1,4 +1,4 @@
-module github.com/mclcavalcante/teamTask/main
+module github.com/mclcavalcante/teamTask
 
 go 1.22.1
 

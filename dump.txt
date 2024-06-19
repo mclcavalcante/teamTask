@@ -1,0 +1,27 @@
+curl --location --request POST 'http://localhost:8080/user' --header 'Content-Type: application/json' --data-raw '{
+    "Name": "Test",
+    "Email": "wayne@mail.id",
+    "Password": "Alta"
+}'
+
+curl --location --request POST 'http://localhost:8000/task' --header 'Content-Type: application/json' --data-raw '{
+    "Title": "Test",
+    "Description": "wayne@mail.id",
+    "Priority": "Alta",
+    "assignedUsers": []
+}'
+
+curl --location --request GET 'http://localhost:8080/closed/high' --header 'Content-Type: application/json' --data-raw '{
+    "Title": "Test",
+    "Description": "wayne@mail.id",
+    "Priority": "Alta",
+    "assignedUsers": [1]
+}'
+
+curl --location --request PUT 'http://localhost:8080/task/1' --header 'Content-Type: application/json' --data-raw '{
+    "Title": "Test",
+    "Description": "wayne@mail.id",
+    "Priority": "Low",
+    "assignedUsers": [],
+    "status": "closed"
+}'

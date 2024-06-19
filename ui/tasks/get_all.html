@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualização de Tarefas</title>
+    <style>
+        /* Estilos para a lista de tarefas */
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualização de Tarefas</h1>
+    <ul id="task-list" class="task-list">
+        <!-- Aqui serão inseridos os itens da lista de tarefas -->
+    </ul>
+    <button onclick="loadTasks()">Carregar Tarefas</button>
+
+    <h2>Nova Tarefa</h2>
+    <form id="task-form" onsubmit="return validateAndSubmitForm()">
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title"><br><br>
+        
+        <label for="description">Descrição:</label>
+        <textarea id="description" name="description"></textarea><br><br>
+        
+        <label for="priority">Prioridade:</label>
+        <select id="priority" name="priority">
+            <option value="Alta">Alta</option>
+            <option value="Média">Média</option>
+            <option value="Baixa">Baixa</option>
+        </select><br><br>
+        
+        <span id="form-error" class="error"></span><br>
+        
+        <button type="submit">Criar Tarefa</button>
+    </form>
+
+    <script>
+        function loadTasks() {
+            fetch('http://localhost:8000/task/all')
+                .then(response => response.json())
+                .then(data => {
+                    const taskList = document.getElementById('task-list');
+                    taskList.innerHTML = '';
+
+                    data.forEach(task => {
+                        const taskItem = document.createElement('li');
+                        taskItem.classList.add('task-item');
+                        taskItem.innerHTML = `
+                            <h3>${task.title}</h3>
+                            <p>${task.description}</p>
+                            <p>Status: ${task.status}</p>
+                            <p>Prioridade: ${task.priority}</p>
+                        `;
+                        taskList.appendChild(taskItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar as tarefas:', error);
+                });
+        }
+
+        function validateAndSubmitForm() {
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const priority = document.getElementById('priority').value;
+            const formError = document.getElementById('form-error');
+
+            // Limpar mensagens de erro
+            formError.textContent = '';
+
+            // Validação
+            if (!title || !description) {
+                formError.textContent = 'Título e descrição são obrigatórios.';
+                return false;
+            }
+
+            // Dados do formulário
+            const taskData = {
+                title: title,
+                description: description,
+                priority: priority
+            };
+
+            // Enviar o formulário para o backend
+            fetch('http://localhost:8000/task/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(taskData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    console.log('Task created:', data);
+                    alert('Tarefa criada com sucesso!');
+                    loadTasks(); // Recarregar a lista de tarefas
+                    document.getElementById('task-form').reset(); // Limpar o formulário
+                } else {
+                    formError.textContent = 'Erro ao criar a tarefa.';
+                }
+            })
+            .catch(error => {
+                formError.textContent = 'Erro ao enviar o formulário.';
+                console.error('Erro:', error);
+            });
+
+            return false; // Prevenir o envio padrão do formulário
+        }
+    </script>
+</body>
+</html>
